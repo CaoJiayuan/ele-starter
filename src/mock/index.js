@@ -1,6 +1,10 @@
 import Mock from 'mockjs';
 import { functions } from 'nerio-js-utils'
 
+Mock.setup({
+  timeout: '250-1000'
+})
+
 const {parseUrl} = functions
 
 const mockToken = {
@@ -69,12 +73,13 @@ Mock.mock(url('/accounts'), function (req) {
 
   return page({
     'id': "@id",
-    'name': '@name',
+    'name': '@cname',
     'address': '@county(true)',
   }, query.page | 1, query.per_page | 10)
 });
 
-Mock.mock('/user', function () {
+Mock.mock('/user', function (req) {
+
   return mockUser
 });
 

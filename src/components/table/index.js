@@ -34,12 +34,14 @@ export default {
         label : 'action',
         click : (action, row) => this.$emit(action.action, row),
         size  : 'small',
+        granted: () => true
       },
       pageMeta     : {
         currentPage: 1,
         total      : 0,
         size       : 10
-      }
+      },
+      showActions: true
     };
   },
   mixins  : [pagination],
@@ -80,7 +82,7 @@ export default {
       return this.renderColumn(h, field);
     });
     let actions = this.fixedActions;
-    if (actions.length > 0) {
+    if (actions.length > 0 && this.showActions) {
       columns.push(this.renderActions(h, actions));
     }
 
@@ -95,7 +97,13 @@ export default {
 
           this.load({sort})
         }
-      }
+      },
+      directives: [
+        {
+          name: 'loading',
+          value: this.loading
+        }
+      ]
     }, columns);
 
     let page = this.renderPage(h);
@@ -153,13 +161,15 @@ export default {
         },
         scopedSlots: {
           default: ({row}) => {
-            return actions.map(action => {
+            let acs = actions.filter(action => action.granted()).map(action => {
               // 有render函数
               if (action.render && typeof action.render === 'function') {
                 rf = action.render;
               }
               return rf.call(this.$parent, action, row, h);
             });
+            this.showActions = acs.length > 0
+            return acs;
           }
         }
       });
