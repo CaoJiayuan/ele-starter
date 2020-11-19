@@ -52,7 +52,8 @@ export default {
         style: {
           width : '100%',
           height: this.showBody ? `${this.toHeight}px` : `${this.fromHeight}px`,
-          overflowY: 'scroll'
+          overflowY: 'scroll',
+          borderRadius: '12px'
         },
         props: {
           bodyStyle: {
@@ -94,13 +95,21 @@ export default {
         y     : stylerBox.get('y'),
       }, stylerBox.set);
     },
+    getContainerOffset() {
+      let rect = this.$refs.container.getBoundingClientRect();
+      let docEl = document.documentElement;
+      return {
+        left: rect.left + (window.pageXOffset || docEl.scrollLeft || 0),
+        top: rect.top + (window.pageYOffset || docEl.scrollTop || 0)
+      };
+    },
     animate(startValue, to) {
       return new Promise(resolve => {
         spring({
           from     : startValue.get(),
           to       : to,
           stiffness: 80,
-          damping  : 50,
+          damping  : 30,
           restDelta: 2,
           restSpeed: 2
         }).start({
@@ -111,17 +120,18 @@ export default {
     },
     open(e) {
       e.stopPropagation();
-      if (this.changed) {
+      if (this.showBody) {
         return;
       }
+      let offset = this.getContainerOffset()
 
       let val = this.getContainerValue();
       let {width} = this.bodyDimension;
 
       let cWidth = val.get().width;
       let cHeight = val.get().height;
-      let cX = this.$refs.container.offsetLeft;
-      let cY = this.$refs.container.offsetTop;
+      let cX = offset.left;
+      let cY = offset.top;
       let toWidth = this.toWidth || cWidth;
       let toHeight = this.toHeight || cHeight;
       let toY = this.toY || 20;

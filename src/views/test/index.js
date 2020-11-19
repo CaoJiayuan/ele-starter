@@ -58,7 +58,7 @@ export default  {
       let b = h(MorphCard, {
         props: {
           toWidth: 720,
-          toHeight: 1000,
+          toHeight: 860,
           fromHeight: 160
         },
       }, [header, content])

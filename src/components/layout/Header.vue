@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar">
+  <div class="navbar" :style="{width: width}">
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
@@ -24,8 +24,12 @@
     name: "Header",
     computed:{
       ...mapGetters({
-        user: "user/profile"
-      })
+        user: "user/profile",
+        'collapse' : 'nav/collapse'
+      }),
+      width(){
+        return this.collapse ? 'calc(100% - 64px)' : 'calc(100% - 256px)'
+      }
     },
     components: {Breadcrumb},
     mounted() {
@@ -58,14 +62,15 @@
   .navbar {
     height: 46px;
     overflow: hidden;
-    position: relative;
-    background: #fff;
+    position: fixed;
+    background: rgba(255,255,255, 0.2);
     box-shadow: 0 1px 4px rgba(0,21,41,.08);
     z-index: 10;
+    padding: 0 12px;
+    backdrop-filter: saturate(180%) blur(26px);
     .breadcrumb-container {
       float: left;
     }
-
 
     .right-menu {
       float: right;
@@ -73,6 +78,9 @@
       line-height: 46px;
       &:focus {
         outline: none;
+      }
+      .el-menu{
+        background-color: inherit;
       }
 
       .right-menu-item {

@@ -1,27 +1,45 @@
 import Header from './Header';
+import {mapGetters} from "vuex";
 
 export default {
-  name: "Main",
+  name    : "Main",
   render(h) {
     let header = h(Header, {});
-    let main = h('el-main', {}, [h('router-view')]);
 
-    let writeSpace = h('div', {
-      style: {
-        height: '46px'
+    let content = h('transition', {
+      props: {
+        name: 'fade-transform',
+        mode: 'out-in'
       }
-    })
+    }, [h('router-view')])
+
+    let main = h('el-main', {
+      style: {
+        marginTop: '66px'
+      }
+    }, [content]);
 
     return h('el-container', {
         props: {
           direction: 'vertical',
-        }
+        },
+        class: 'app-main',
       },
       [
-        header,
         h('div', {
-          class: 'app-main',
-        }, [main, writeSpace]),
+          class: 'app-content',
+          style: {
+            // width: `calc(100% - ${this.asideWidth})`
+          }
+        }, [header,main]),
       ]);
+  },
+  computed: {
+    asideWidth() {
+      return this.collapse ? '64px' : '256px';
+    },
+    ...mapGetters({
+      collapse: 'nav/collapse'
+    })
   }
 };

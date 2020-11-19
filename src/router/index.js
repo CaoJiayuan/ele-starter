@@ -58,11 +58,15 @@ export const constantRoutes = [
           title: '用户'
         }
       },
+      {
+        path: '/test',
+        component: () => import('@/views/test'),
+        meta: {
+          title: '测试页面'
+        }
+
+      },
     ]
-  },
-  {
-    path: '/test',
-    component: () => import('@/views/test')
   },
   { path: '*', redirect: '/404', hidden: true }
 ];

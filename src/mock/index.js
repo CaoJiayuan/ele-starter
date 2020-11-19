@@ -34,6 +34,14 @@ const mockNav = [
     icon: 'el-icon-user',
     nodes: []
   },
+
+  {
+    id: 3,
+    path: '/test',
+    name: '测试页面',
+    icon: 'el-icon-s-opportunity',
+    nodes: []
+  },
 ]
 
 function url(url) {
@@ -108,6 +116,5 @@ Mock.mock('/articles', function () {
     item.image = `https://picsum.photos/1000/500/?${item.nonce}`
     return item
   })
-  console.log(data)
   return data
 });
