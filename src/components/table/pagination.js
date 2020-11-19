@@ -152,6 +152,9 @@ export default {
       }
 
       return request({url, method: 'get', params})
+    },
+    reload(params = {}) {
+      return this.load(params)
     }
   }
 }

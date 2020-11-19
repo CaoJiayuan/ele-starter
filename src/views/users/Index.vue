@@ -69,8 +69,10 @@
       handleView(row) {
         alert(JSON.stringify(row))
       },
-      handleDelete(row) {
-        confirm(`是否删除"${row.name}"?`)
+      handleDelete(row, reload) {
+        if (confirm(`是否删除"${row.name}"?`)) {
+          reload()
+        }
       }
     }
   };

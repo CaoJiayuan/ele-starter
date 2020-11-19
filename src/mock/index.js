@@ -95,3 +95,19 @@ Mock.mock('/nav', function () {
 
   return mockNav
 });
+
+Mock.mock('/articles', function () {
+
+  let data = page({
+    'id': "@id",
+    'title': '@ctitle',
+    'content': '@cparagraph(200)',
+    'nonce': '@string'
+  });
+  data.data = data.data.map(item => {
+    item.image = `https://picsum.photos/1000/500/?${item.nonce}`
+    return item
+  })
+  console.log(data)
+  return data
+});

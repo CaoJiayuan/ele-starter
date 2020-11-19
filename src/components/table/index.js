@@ -32,7 +32,6 @@ export default {
         type  : 'text',
         action: 'action',
         label : 'action',
-        click : (action, row) => this.$emit(action.action, row),
         size  : 'small',
         granted: () => true
       },
@@ -67,9 +66,14 @@ export default {
       if (this.cacheActions.length > 0) {
         return this.cacheActions;
       }
+      let reload = this.reload
 
       return this.cacheActions = this.actions.map(action => {
         if (typeof action == 'object') {
+          if (action.click === undefined) {
+            action.click = (action, row) => this.$emit(action.action, row, reload)
+          }
+
           return Object.assign(_.clone(this.defaultAction), action);
         }
 
