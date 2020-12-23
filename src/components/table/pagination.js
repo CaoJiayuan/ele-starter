@@ -1,18 +1,23 @@
 import { functions, BrowserStorage } from 'nerio-js-utils'
 import request from '@/request'
 import _ from 'lodash'
+import el from "element-ui/src/locale/lang/el";
 
 const {setQuery, httpQueryString} = functions
 
 export default {
   props: {
     apiUrl: {
-      type: String,
+      type: String|undefined,
       required: true
     },
     cacheExpire : {
       type:Number,
       default:() => 0
+    },
+    paginate: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -33,12 +38,14 @@ export default {
       loading: false,
       refreshing: false,
       pageSize: 10,
-      keyword: null
+      keyword: null,
+      loaded: false
     }
   },
   methods: {
     load ({per_page = this.pageSize, page = 1, sort, filters, search}, append = false) {
       this.loading = true
+      this.loaded = false
       this.selected = []
       let params = {
         per_page,
@@ -59,13 +66,19 @@ export default {
         let paginator = response.data
         this.loading = false
         this.refreshing = false
-        paginator.url = setQuery(response.config.url, response.config.params)
-        let { data, meta  } = paginator
-        this.paginator.meta = meta
-        if (append) {
-          this.paginator.data = this.paginator.data.concat(data)
+        this.loaded = true
+        if (!this.paginate) {
+          // 不分页
+          this.paginator.data = paginator
         } else  {
-          this.paginator.data = data
+          paginator.url = setQuery(response.config.url, response.config.params)
+          let { data, meta  } = paginator
+          this.paginator.meta = meta
+          if (append) {
+            this.paginator.data = this.paginator.data.concat(data)
+          } else  {
+            this.paginator.data = data
+          }
         }
 
         this.$emit('loaded', this.paginator)
@@ -73,6 +86,8 @@ export default {
       }).catch(error => {
         this.loading = false
         this.refreshing = false
+        this.loaded = true
+        Promise.reject(error)
       })
     },
     buildFilters (filters, name = 'filters') {
@@ -155,6 +170,33 @@ export default {
     },
     reload(params = {}) {
       return this.load(params)
+    },
+    waitLoad(timeout = 5){
+      let interval;
+      let i = 100
+
+      let j = 0;
+      return new Promise((resolve, reject) => {
+        if (this.loaded) {
+          resolve()
+        } else {
+          interval = setInterval(() => {
+            if (this.loaded) {
+              resolve()
+              clearInterval(interval)
+            } else if ((timeout * 1000 / i) < j){
+              clearInterval(interval)
+              reject('wait timeout')
+            }
+            j++;
+          }, i)
+        }
+      })
+    }
+  },
+  watch: {
+    apiUrl(now) {
+      now && this.reload()
     }
   }
 }

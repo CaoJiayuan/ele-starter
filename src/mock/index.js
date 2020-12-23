@@ -4,7 +4,6 @@ import { functions } from 'nerio-js-utils'
 Mock.setup({
   timeout: '250-1000'
 })
-
 const {parseUrl} = functions
 
 const mockToken = {
@@ -76,6 +75,7 @@ Mock.mock('/login', function (req) {
 });
 
 Mock.mock(url('/accounts'), function (req) {
+  console.log(req)
 
   let {query} = parseUrl(req.url)
 

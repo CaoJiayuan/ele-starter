@@ -1,0 +1,55 @@
+.user-profile {
+  display: flex;
+  padding: 6px;
+  border: 1px solid #DCDFE6;
+  border-radius: 8px;
+  max-width: 256px;
+  margin: 6px 0;
+  .avatar {
+
+  }
+  .user-desc {
+    margin-left: 6px;
+    p {
+      height: 24px;
+      line-height: 24px;
+      color: #606266;
+    }
+  }
+}
+
+.filters {
+  .filter-actions {
+    margin: 10px 0;
+  }
+  &>div {
+    margin-right: 10px;
+    margin-top: 6px;
+  }
+}
+.select-prefix {
+  background-color: #F5F7FA;
+  height: 100%;
+  padding: 0 12px;
+}
+.el-input-group__prepend {
+  padding: 0 12px;
+}
+.el-slider__marks-text {
+  margin-top: 6px;
+}
+
+.el-dialog__header {
+  padding: 12px;
+  border-bottom: 1px solid #dcdfe6;
+  position: relative;
+  .el-dialog__headerbtn {
+    top: 50%;
+    transform: translateY(-50%);
+    right: 14px;
+  }
+}
+
+.el-dialog__body {
+  padding: 12px;
+}

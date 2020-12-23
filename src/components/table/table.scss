@@ -1,0 +1,14 @@
+.table-container{
+  padding: 6px 0;
+  .table-filters {
+    color: #5a5e66;
+    font-size: 15px;
+    .table-filter-actions {
+      margin: 10px 0;
+    }
+    &>div {
+      margin-right: 10px;
+      margin-top: 6px;
+    }
+  }
+}

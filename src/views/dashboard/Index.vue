@@ -6,7 +6,7 @@
           <span>Dashboard</span>
         </div>
 
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="12">
             <el-card class="box-card" shadow="never">
               <div slot="header">
@@ -14,6 +14,14 @@
               </div>
               <Quill v-model="content" style="height: 256px"/>
               <el-button @click="submit">确定</el-button>
+            </el-card>
+          </el-col>
+          <el-col :span="12">
+            <el-card class="box-card" shadow="never">
+              <div slot="header">
+                <span>多文件上传</span>
+              </div>
+              <files-upload/>
             </el-card>
           </el-col>
         </el-row>
@@ -25,9 +33,10 @@
 
 <script>
   import Quill from "@/components/editor/quill/Index";
+  import FilesUpload from "@/components/upload/files";
   export default {
     name: "Dashboard",
-    components: {Quill},
+    components: {FilesUpload, Quill},
     data() {
       return {
         content: ''
